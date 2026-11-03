@@ -3,14 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo Sistem RJ Cats House</title>
+<title>Demo Sistem RJ Cat Motel & Spa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f6f4f1; --surface:#ffffff; --surface-2:#faf8f5; --line:#e7e2db;
-  --ink:#231f1c; --ink-2:#6b625a; --ink-3:#998f86;
-  --brand:#c2571a; --brand-soft:#fbeadf; --brand-ink:#8a3a0e;
+  --bg:#f8f4f7; --surface:#ffffff; --surface-2:#fbf7fa; --line:#ece0e8;
+  --ink:#2a1426; --ink-2:#6e5568; --ink-3:#9c8796;
+  --brand:#a8237a; --brand-soft:#f8e2f0; --brand-ink:#7d1559;
+  --plum:#2b0a2c; --plum-2:#5c1453; --pink:#e88ac7;
   --good:#2f7d4f; --good-soft:#e2f2e8; --warn:#a86a00; --warn-soft:#fbf0d9;
   --bad:#b3372f; --bad-soft:#f9e1de; --blue:#2c64b5; --blue-soft:#e3ecf8;
   --shadow:0 1px 2px rgba(35,31,28,.06),0 4px 16px rgba(35,31,28,.05);
@@ -18,18 +19,18 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#171412; --surface:#211d1a; --surface-2:#1c1916; --line:#36302b;
-    --ink:#f2ede8; --ink-2:#b5aaa0; --ink-3:#857a70;
-    --brand:#ec8a4c; --brand-soft:#3a2416; --brand-ink:#f6b78e;
+    --bg:#160b15; --surface:#211320; --surface-2:#1b0f1a; --line:#3a2537;
+    --ink:#f6edf3; --ink-2:#bfa6b8; --ink-3:#8b7386;
+    --brand:#e070b8; --brand-soft:#3b1534; --brand-ink:#f3b0db;
     --good:#6cc28f; --good-soft:#1c3226; --warn:#e2ae4a; --warn-soft:#3a2d12;
     --bad:#ec7a70; --bad-soft:#3d1d1a; --blue:#7fa9e6; --blue-soft:#1c2a3e;
     --shadow:0 1px 2px rgba(0,0,0,.3);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#171412; --surface:#211d1a; --surface-2:#1c1916; --line:#36302b;
-  --ink:#f2ede8; --ink-2:#b5aaa0; --ink-3:#857a70;
-  --brand:#ec8a4c; --brand-soft:#3a2416; --brand-ink:#f6b78e;
+  --bg:#160b15; --surface:#211320; --surface-2:#1b0f1a; --line:#3a2537;
+  --ink:#f6edf3; --ink-2:#bfa6b8; --ink-3:#8b7386;
+  --brand:#e070b8; --brand-soft:#3b1534; --brand-ink:#f3b0db;
   --good:#6cc28f; --good-soft:#1c3226; --warn:#e2ae4a; --warn-soft:#3a2d12;
   --bad:#ec7a70; --bad-soft:#3d1d1a; --blue:#7fa9e6; --blue-soft:#1c2a3e;
   --shadow:0 1px 2px rgba(0,0,0,.3);
@@ -39,11 +40,16 @@ html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:14px/1.5 "Plus Jakarta Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit;color:inherit}
 h1,h2,h3{margin:0;line-height:1.25}
-.demo-bar{background:var(--ink);color:var(--bg);font-size:12.5px;padding:7px 16px;text-align:center}
-.demo-bar b{color:var(--brand)}
-header.top{display:flex;align-items:center;gap:16px;padding:14px 24px;background:var(--surface);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.demo-bar{background:#16051a;color:#f3dcea;font-size:12.5px;padding:7px 16px;text-align:center}
+.demo-bar b{color:#f29bd1}
+header.top{display:flex;align-items:center;gap:16px;padding:12px 24px;background:linear-gradient(100deg,#2b0a2c 0%,#4a0f44 55%,#7a1a63 100%);color:#fff;flex-wrap:wrap}
+header.top .logo small{color:#e8bfdc}
+header.top .mode{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
+header.top .mode button{color:#e8c9de}
+header.top .mode button.on{background:#fff;color:#4a0f44}
 .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
-.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand);display:grid;place-items:center}
+.logo-mark{width:46px;height:46px;border-radius:12px;overflow:hidden;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.25)}
+.logo-mark img{width:100%;height:100%;display:block}
 .logo small{display:block;font-weight:500;font-size:11.5px;color:var(--ink-2)}
 .mode{margin-left:auto;display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:3px}
 .mode button{border:0;background:none;padding:7px 16px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--ink-2);position:relative}
@@ -158,6 +164,8 @@ table.t tr:last-child td{border-bottom:0}
 
 /* customer */
 .cust{max-width:1040px;margin:0 auto;padding:24px 16px 48px}
+.hero-txt h1{background:linear-gradient(90deg,var(--brand-ink),var(--brand));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn.pri{background:linear-gradient(100deg,#7d1559,#a8237a)}
 .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
 .hero-txt h1{font-size:30px;letter-spacing:-.01em}
 .hero-txt p{color:var(--ink-2);font-size:15px}
@@ -196,7 +204,7 @@ label.f span{display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;co
 :root[data-theme="dark"] .wa{background:#0b141a}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .wa{background:#0b141a}}
 .wa-msg{background:#dcf8c6;color:#111;border-radius:8px;padding:8px 10px;max-width:88%;margin-left:auto;font-size:13px;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.1)}
-.photo-ph{height:120px;border-radius:6px;margin-bottom:6px;display:grid;place-items:center;background:linear-gradient(135deg,#f3c9a8,#e79a6b)}
+.photo-ph{height:120px;border-radius:6px;margin-bottom:6px;display:grid;place-items:center;background:linear-gradient(135deg,#f1b6da,#a8237a)}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;opacity:0;transition:.25s;z-index:60;pointer-events:none;max-width:calc(100% - 32px)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .hide{display:none!important}
@@ -222,11 +230,11 @@ label.f span{display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;co
 </style>
 </head>
 <body>
-<div class="demo-bar">Demo cadangan oleh <b>Binalab</b> untuk RJ Cats House. Semua data di sini ialah data contoh.</div>
+<div class="demo-bar">Demo cadangan oleh <b>Binalab</b> untuk RJ Cat Motel &amp; Spa. Semua data di sini ialah data contoh.</div>
 <header class="top">
   <div class="logo">
-    <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M4 3l4 4h8l4-4v9a8 8 0 0 1-16 0z"/></svg></div>
-    <div>RJ Cats House<small>Cats Motel &amp; Spa, Kota Bharu</small></div>
+    <div class="logo-mark"><img src="logo.jpg" alt="Logo RJ Cat Motel &amp; Spa"></div>
+    <div>RJ Cat Motel &amp; Spa<small>Hotel &amp; spa kucing, Kota Bharu</small></div>
   </div>
   <div class="mode" role="tablist">
     <button id="m-cust" class="on" onclick="setMode('cust')">Paparan Pelanggan</button>
@@ -335,7 +343,7 @@ const dShort = s => { const d = parse(s); return d.getDate()+' '+BULAN[d.getMont
 const rm = n => 'RM' + n.toLocaleString('en-MY',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const TODAY = iso(new Date());
-const COLORS = ['#c2571a','#2c64b5','#2f7d4f','#8a4fb3','#b3372f','#a86a00','#167a80','#6b625a'];
+const COLORS = ['#a8237a','#2c64b5','#2f7d4f','#8a4fb3','#b3372f','#a86a00','#167a80','#6b625a'];
 
 /* ---------- data (contoh) ---------- */
 const ROOMTYPES = {
@@ -572,7 +580,7 @@ function pDash(){
   const low = products.filter(p => p.stock<=p.min);
   const recent = [...stays, ...grooms].filter(x => x.isNew);
   const row = (s, label, cls) => { const c = catById(s.cat); return `<tr><td><div class="who">${avatar(c)}<div><b>${esc(c.name)}</b><div class="small muted">${esc(c.owner)}</div></div></div></td><td>${s.room}</td><td><span class="pill ${cls}">${label}</span></td></tr>`; };
-  return head('Selamat pagi, RJ Cats House', longDate(TODAY)) +
+  return head('Selamat datang, RJ Cat Motel & Spa', longDate(TODAY)) +
   (recent.length ? `<div class="card" style="margin-bottom:16px;border-color:var(--brand)"><div class="card-h"><h2>Tempahan baru dalam talian</h2><span class="pill p-brand">${recent.length} baru</span></div><table class="t">${recent.map(x => { const c=catById(x.cat); const isStay = !!x.room; return `<tr><td><b>${x.id}</b></td><td><div class="who">${avatar(c)}<div><b>${esc(c.name)}</b><div class="small muted">${esc(c.owner)} · ${esc(c.phone)}</div></div></div></td><td>${isStay? 'Hotel, bilik '+x.room+'<div class="small muted">'+dShort(x.in)+' hingga '+dShort(x.out)+'</div>' : PKGS[x.pkg].name+'<div class="small muted">'+dShort(x.date)+', '+x.slot+'</div>'}</td><td>${x.paid?'<span class="pill p-good">Deposit dibayar</span>':'<span class="pill p-warn">Menunggu deposit</span>'}</td></tr>`; }).join('')}</table></div>` : '') +
   `<div class="grid g4" style="margin-bottom:16px">
     <div class="card stat"><div class="lbl">Bilik terisi</div><div class="val">${occ} / ${ROOMS.length}</div><div class="meter"><i style="width:${occ/ROOMS.length*100}%"></i></div></div>
@@ -637,7 +645,7 @@ function pGroom(){
 function remind(id){
   const c = catById(id);
   openModal(`<div class="card-h"><h2>Peringatan ke ${esc(c.owner)}</h2><button class="btn sm" onclick="closeModal()">Tutup</button></div>
-  <div class="card-b"><div class="wa"><div class="wa-msg">Salam ${esc(c.owner)}, sudah ${nightsBetween(c.lastGroomDate,TODAY)} hari ${esc(c.name)} tidak grooming. Tempah slot minggu ini dan dapat potongan 10%:\nrjcatshouse.my/tempah\n\n- RJ Cats House</div></div>
+  <div class="card-b"><div class="wa"><div class="wa-msg">Salam ${esc(c.owner)}, sudah ${nightsBetween(c.lastGroomDate,TODAY)} hari ${esc(c.name)} tidak grooming. Tempah slot minggu ini dan dapat potongan 10%:\nrjcatmotel.my/tempah\n\n- RJ Cat Motel & Spa</div></div>
   <button class="btn pri" style="width:100%;margin-top:12px" onclick="reminded.add(${id});closeModal();toast('Peringatan dihantar melalui WhatsApp');render()">Hantar melalui WhatsApp</button></div>`);
 }
 
@@ -680,7 +688,7 @@ function updateModal(id){
     <button class="btn pri" style="width:100%;margin-top:12px" onclick="sendUpdate(${id})">Hantar ke WhatsApp ${esc(c.owner)}</button>
   </div>`);
 }
-function waText(id){ const c = catById(id); const n = document.getElementById('upNote'); return `Salam ${c.owner}! Kemas kini ${c.name} hari ini:\n${n? n.value : 'Makan habis, aktif bermain pagi tadi'}\n\n- RJ Cats House`; }
+function waText(id){ const c = catById(id); const n = document.getElementById('upNote'); return `Salam ${c.owner}! Kemas kini ${c.name} hari ini:\n${n? n.value : 'Makan habis, aktif bermain pagi tadi'}\n\n- RJ Cat Motel & Spa`; }
 function sendUpdate(id){ const c = catById(id); c.updates.unshift({date:TODAY,note:document.getElementById('upNote').value}); closeModal(); toast(`Gambar dan nota ${c.name} dihantar ke ${c.owner}`); render(); }
 
 function pPos(){
@@ -709,7 +717,7 @@ function checkout(method){
   sales.push({total,items}); cart = [];
   const low = products.filter(p=>p.stock<=p.min).map(p=>p.name);
   openModal(`<div class="card-h"><h2>Resit digital</h2><button class="btn sm" onclick="closeModal()">Tutup</button></div><div class="card-b">
-    <div style="text-align:center;margin-bottom:10px"><b>RJ Cats House</b><div class="small muted">Wisma Bakty, Seksyen 48, Kota Bharu</div><div class="small muted">${longDate(TODAY)} · ${method}</div></div>
+    <div style="text-align:center;margin-bottom:10px"><b>RJ Cat Motel &amp; Spa</b><div class="small muted">Wisma Bakty, Seksyen 48, Kota Bharu</div><div class="small muted">${longDate(TODAY)} · ${method}</div></div>
     ${lines}<div class="total"><span>Jumlah</span><span>${rm(total)}</span></div>
     <button class="btn pri" style="width:100%;margin-top:14px" onclick="closeModal();toast('Resit dihantar ke WhatsApp pelanggan')">Hantar resit ke WhatsApp</button>
     ${low.length?`<div class="avail p-warn" style="margin:12px 0 0">Amaran stok rendah: ${low.map(esc).join(', ')}</div>`:''}

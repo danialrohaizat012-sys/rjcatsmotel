@@ -1,6 +1,6 @@
-# Demo Sistem RJ Cats House
+# Demo Sistem RJ Cat Motel & Spa
 
-Demo cadangan sistem pengurusan oleh **Binalab** untuk RJ Cats House (Cats Motel & Spa), Kota Bharu.
+Demo cadangan sistem pengurusan oleh **Binalab** untuk RJ Cat Motel & Spa, Kota Bharu.
 
 Semua data dalam demo ialah data contoh. Bayaran (FPX, DuitNow) dan mesej WhatsApp hanya simulasi.
 
