@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo Sistem RJ Cats House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4f1; --surface:#ffffff; --surface-2:#faf8f5; --line:#e7e2db;
+  --ink:#231f1c; --ink-2:#6b625a; --ink-3:#998f86;
+  --brand:#c2571a; --brand-soft:#fbeadf; --brand-ink:#8a3a0e;
+  --good:#2f7d4f; --good-soft:#e2f2e8; --warn:#a86a00; --warn-soft:#fbf0d9;
+  --bad:#b3372f; --bad-soft:#f9e1de; --blue:#2c64b5; --blue-soft:#e3ecf8;
+  --shadow:0 1px 2px rgba(35,31,28,.06),0 4px 16px rgba(35,31,28,.05);
+  --radius:12px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171412; --surface:#211d1a; --surface-2:#1c1916; --line:#36302b;
+    --ink:#f2ede8; --ink-2:#b5aaa0; --ink-3:#857a70;
+    --brand:#ec8a4c; --brand-soft:#3a2416; --brand-ink:#f6b78e;
+    --good:#6cc28f; --good-soft:#1c3226; --warn:#e2ae4a; --warn-soft:#3a2d12;
+    --bad:#ec7a70; --bad-soft:#3d1d1a; --blue:#7fa9e6; --blue-soft:#1c2a3e;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171412; --surface:#211d1a; --surface-2:#1c1916; --line:#36302b;
+  --ink:#f2ede8; --ink-2:#b5aaa0; --ink-3:#857a70;
+  --brand:#ec8a4c; --brand-soft:#3a2416; --brand-ink:#f6b78e;
+  --good:#6cc28f; --good-soft:#1c3226; --warn:#e2ae4a; --warn-soft:#3a2d12;
+  --bad:#ec7a70; --bad-soft:#3d1d1a; --blue:#7fa9e6; --blue-soft:#1c2a3e;
+  --shadow:0 1px 2px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 "Plus Jakarta Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{margin:0;line-height:1.25}
+.demo-bar{background:var(--ink);color:var(--bg);font-size:12.5px;padding:7px 16px;text-align:center}
+.demo-bar b{color:var(--brand)}
+header.top{display:flex;align-items:center;gap:16px;padding:14px 24px;background:var(--surface);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand);display:grid;place-items:center}
+.logo small{display:block;font-weight:500;font-size:11.5px;color:var(--ink-2)}
+.mode{margin-left:auto;display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:3px}
+.mode button{border:0;background:none;padding:7px 16px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--ink-2);position:relative}
+.mode button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.badge{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--bad);color:#fff;font-size:11px;font-weight:700;margin-left:6px}
+.badge:empty{display:none}
+
+/* staff layout */
+.staff{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 100px)}
+nav.side{background:var(--surface);border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:2px}
+nav.side button{display:flex;align-items:center;gap:10px;border:0;background:none;text-align:left;padding:9px 12px;border-radius:9px;cursor:pointer;color:var(--ink-2);font-weight:500}
+nav.side button:hover{background:var(--surface-2);color:var(--ink)}
+nav.side button.on{background:var(--brand-soft);color:var(--brand-ink);font-weight:600}
+nav.side svg{width:18px;height:18px;flex:none}
+main{padding:24px;min-width:0}
+.page-h{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.page-h h1{font-size:22px}
+.page-h p{margin:2px 0 0;color:var(--ink-2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.card-h{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);gap:8px;flex-wrap:wrap}
+.card-h h2{font-size:15px}
+.card-b{padding:16px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g2{grid-template-columns:1.4fr 1fr}
+.g2e{grid-template-columns:1fr 1fr}
+.stat{padding:16px}
+.stat .lbl{color:var(--ink-2);font-size:12.5px}
+.stat .val{font-size:26px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums}
+.stat .sub{font-size:12px;color:var(--ink-3)}
+.meter{height:6px;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;margin-top:8px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--brand)}
+table.t{width:100%;border-collapse:collapse}
+table.t th{text-align:left;font-size:12px;font-weight:600;color:var(--ink-2);padding:9px 16px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+table.t td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.t tr:last-child td{border-bottom:0}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.p-good{background:var(--good-soft);color:var(--good)}
+.p-warn{background:var(--warn-soft);color:var(--warn)}
+.p-bad{background:var(--bad-soft);color:var(--bad)}
+.p-blue{background:var(--blue-soft);color:var(--blue)}
+.p-brand{background:var(--brand-soft);color:var(--brand-ink)}
+.p-mute{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:9px;cursor:pointer;font-weight:600;white-space:nowrap}
+.btn:hover{background:var(--surface-2)}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.pri:hover{filter:brightness(.95)}
+.btn.sm{padding:5px 10px;font-size:12.5px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.muted{color:var(--ink-2)}
+.small{font-size:12.5px}
+.who{display:flex;align-items:center;gap:10px}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none;color:#fff}
+.empty{padding:28px;text-align:center;color:var(--ink-3)}
+.scroll-x{overflow-x:auto}
+
+/* calendar */
+.cal{border-collapse:separate;border-spacing:0;min-width:900px;width:100%}
+.cal th,.cal td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);height:42px;padding:0;font-size:12px}
+.cal th{background:var(--surface-2);font-weight:600;color:var(--ink-2);padding:6px 4px;text-align:center}
+.cal th.today{color:var(--brand-ink);background:var(--brand-soft)}
+.cal td.room{padding:0 12px;font-weight:600;white-space:nowrap;background:var(--surface);position:sticky;left:0;z-index:1}
+.cal td.room small{display:block;font-weight:500;color:var(--ink-3);font-size:11px}
+.cal td.cell{position:relative;min-width:56px}
+.cal .bk{position:absolute;inset:6px 2px;border-radius:7px;padding:0 8px;display:flex;align-items:center;font-weight:600;font-size:12px;overflow:hidden;white-space:nowrap;cursor:default}
+.bk.k-std{background:var(--blue-soft);color:var(--blue)}
+.bk.k-dlx{background:var(--brand-soft);color:var(--brand-ink)}
+.bk.k-ste{background:var(--good-soft);color:var(--good)}
+.bk.new{outline:2px solid var(--brand);outline-offset:-2px}
+
+/* grooming */
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.slot{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface-2);min-height:72px}
+.slot .tm{font-weight:700;font-size:13px}
+.slot.busy{background:var(--brand-soft);border-color:transparent}
+.slot.busy .tm{color:var(--brand-ink)}
+.slot .free{color:var(--ink-3);font-size:12.5px}
+
+/* cats */
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.cat{padding:16px;cursor:pointer;transition:border-color .15s}
+.cat:hover{border-color:var(--brand)}
+.cat-top{display:flex;gap:12px;align-items:center}
+.cat-pic{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;flex:none}
+.cat h3{font-size:15px}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;font-size:13px}
+.kv dt{color:var(--ink-2)}
+.kv dd{margin:0}
+
+/* pos */
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.prod{padding:14px;cursor:pointer;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:var(--radius)}
+.prod:hover{border-color:var(--brand)}
+.prod b{display:block;font-size:13.5px}
+.prod .pr{font-weight:700;color:var(--brand-ink);margin-top:6px}
+.cart-line{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line);gap:8px}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:var(--surface);cursor:pointer;line-height:1}
+.total{display:flex;justify-content:space-between;font-size:18px;font-weight:700;padding-top:12px}
+
+/* chart */
+.bars{display:flex;align-items:flex-end;gap:14px;height:180px;padding-top:12px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar i{display:block;width:100%;max-width:48px;background:var(--brand);border-radius:6px 6px 0 0;opacity:.35}
+.bar.cur i{opacity:1}
+.bar span{font-size:12px;color:var(--ink-2)}
+.bar b{font-size:12px;font-variant-numeric:tabular-nums}
+.hbar{display:grid;grid-template-columns:130px 1fr 70px;align-items:center;gap:10px;margin-bottom:10px;font-size:13px}
+.hbar .tr{height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.hbar .tr i{display:block;height:100%;background:var(--brand)}
+
+/* customer */
+.cust{max-width:1040px;margin:0 auto;padding:24px 16px 48px}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.hero-txt h1{font-size:30px;letter-spacing:-.01em}
+.hero-txt p{color:var(--ink-2);font-size:15px}
+.feat{display:grid;gap:10px;margin-top:18px}
+.feat div{display:flex;gap:10px;align-items:flex-start}
+.feat svg{width:20px;height:20px;flex:none;color:var(--brand);margin-top:1px}
+.tabs{display:flex;gap:6px;background:var(--surface-2);border:1px solid var(--line);padding:4px;border-radius:10px;margin-bottom:14px}
+.tabs button{flex:1;border:0;background:none;padding:8px;border-radius:7px;cursor:pointer;font-weight:600;color:var(--ink-2)}
+.tabs button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+label.f{display:block;margin-bottom:12px}
+label.f span{display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;color:var(--ink-2)}
+.inp{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+.inp:focus{outline:2px solid var(--brand);outline-offset:-1px;border-color:transparent}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.room-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.ropt{border:1px solid var(--line);border-radius:10px;padding:10px;cursor:pointer;background:var(--surface);text-align:left}
+.ropt.on{border-color:var(--brand);background:var(--brand-soft)}
+.ropt b{display:block;font-size:13px}
+.ropt span{font-size:12px;color:var(--ink-2)}
+.ropt.full{opacity:.5}
+.tslots{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.tslot{border:1px solid var(--line);border-radius:8px;padding:7px 0;background:var(--surface);cursor:pointer;font-weight:600;font-size:13px}
+.tslot.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.tslot:disabled{text-decoration:line-through;opacity:.45;cursor:not-allowed}
+.avail{padding:10px 12px;border-radius:9px;font-size:13px;margin-bottom:12px}
+.sum{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px;font-size:13px}
+.sum div{display:flex;justify-content:space-between;padding:2px 0}
+.sum .tt{font-weight:700;font-size:15px;border-top:1px solid var(--line);margin-top:6px;padding-top:8px}
+.ok-ic{width:52px;height:52px;border-radius:50%;background:var(--good-soft);color:var(--good);display:grid;place-items:center;margin:0 auto 10px}
+
+/* modal + toast */
+.modal-bg{position:fixed;inset:0;background:rgba(20,16,12,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal-bg.show{display:flex}
+.modal{width:100%;max-width:520px;max-height:90vh;overflow:auto}
+.wa{background:#e5ddd5;border-radius:10px;padding:14px}
+:root[data-theme="dark"] .wa{background:#0b141a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .wa{background:#0b141a}}
+.wa-msg{background:#dcf8c6;color:#111;border-radius:8px;padding:8px 10px;max-width:88%;margin-left:auto;font-size:13px;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.1)}
+.photo-ph{height:120px;border-radius:6px;margin-bottom:6px;display:grid;place-items:center;background:linear-gradient(135deg,#f3c9a8,#e79a6b)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;opacity:0;transition:.25s;z-index:60;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.hide{display:none!important}
+
+@media (max-width:900px){
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g2,.g2e,.hero{grid-template-columns:1fr}
+  .slots{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:720px){
+  header.top{padding:12px 16px}
+  .mode{margin-left:0;width:100%}
+  .mode button{flex:1}
+  .staff{grid-template-columns:1fr}
+  nav.side{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);padding:8px 16px}
+  nav.side button{white-space:nowrap;padding:8px 10px}
+  main{padding:16px}
+  .hide-sm{display:none}
+  table.t th,table.t td{padding:9px 10px}
+  .room-opts{grid-template-columns:1fr}
+  .hbar{grid-template-columns:100px 1fr 60px}
+}
+</style>
+</head>
+<body>
+<div class="demo-bar">Demo cadangan oleh <b>Binalab</b> untuk RJ Cats House. Semua data di sini ialah data contoh.</div>
+<header class="top">
+  <div class="logo">
+    <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M4 3l4 4h8l4-4v9a8 8 0 0 1-16 0z"/></svg></div>
+    <div>RJ Cats House<small>Cats Motel &amp; Spa, Kota Bharu</small></div>
+  </div>
+  <div class="mode" role="tablist">
+    <button id="m-cust" class="on" onclick="setMode('cust')">Paparan Pelanggan</button>
+    <button id="m-staff" onclick="setMode('staff')">Paparan Staf<span class="badge" id="newBadge"></span></button>
+  </div>
+</header>
+
+<!-- CUSTOMER -->
+<section id="cust" class="cust">
+  <div class="hero">
+    <div class="hero-txt">
+      <span class="pill p-brand">Tempahan dalam talian 24 jam</span>
+      <h1 style="margin-top:12px">Tempah hotel atau grooming untuk kucing anda dalam 1 minit</h1>
+      <p>Lihat bilik kosong secara langsung, pilih slot grooming, dan bayar deposit terus. Tak perlu tunggu balasan WhatsApp.</p>
+      <div class="feat">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span>Kekosongan bilik dikemas kini automatik, tiada tempahan bertindih</span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span>Gambar dan nota harian kucing dihantar ke WhatsApp anda</span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span>Peringatan sehari sebelum masuk atau temujanji</span></div>
+      </div>
+      <div class="card" style="margin-top:22px">
+        <div class="card-h"><h2>Harga</h2><span class="small muted">contoh</span></div>
+        <table class="t">
+          <tr><td>Bilik Standard</td><td class="num">RM20 / malam</td></tr>
+          <tr><td>Bilik Deluxe</td><td class="num">RM30 / malam</td></tr>
+          <tr><td>Suite (tingkap, ruang main)</td><td class="num">RM45 / malam</td></tr>
+          <tr><td>Grooming Penuh</td><td class="num">RM80</td></tr>
+          <tr><td>Mandi Asas</td><td class="num">RM40</td></tr>
+          <tr><td>Potong Kuku &amp; Bersih Telinga</td><td class="num">RM15</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" id="bookCard">
+      <div class="card-b" id="bookForm">
+        <div class="tabs">
+          <button id="t-hotel" class="on" onclick="setSvc('hotel')">Hotel Kucing</button>
+          <button id="t-groom" onclick="setSvc('groom')">Grooming &amp; Spa</button>
+        </div>
+
+        <div id="f-hotel">
+          <div class="row2">
+            <label class="f"><span>Tarikh masuk</span><input type="date" class="inp" id="h-in" onchange="refreshHotel()"></label>
+            <label class="f"><span>Tarikh keluar</span><input type="date" class="inp" id="h-out" onchange="refreshHotel()"></label>
+          </div>
+          <span class="small muted" style="font-weight:600;display:block;margin-bottom:5px">Jenis bilik</span>
+          <div class="room-opts" id="roomOpts"></div>
+          <div id="availMsg"></div>
+        </div>
+
+        <div id="f-groom" class="hide">
+          <label class="f"><span>Pakej</span>
+            <select class="inp" id="g-pkg" onchange="refreshGroom()"></select>
+          </label>
+          <label class="f"><span>Tarikh</span><input type="date" class="inp" id="g-date" onchange="refreshGroom()"></label>
+          <span class="small muted" style="font-weight:600;display:block;margin-bottom:5px">Slot masa</span>
+          <div class="tslots" id="tslots"></div>
+        </div>
+
+        <div class="row2">
+          <label class="f"><span>Nama kucing</span><input class="inp" id="c-name" placeholder="cth. Oyen"></label>
+          <label class="f"><span>Baka</span><input class="inp" id="c-breed" placeholder="cth. Persian"></label>
+        </div>
+        <div class="row2">
+          <label class="f"><span>Nama pemilik</span><input class="inp" id="o-name" placeholder="Nama anda"></label>
+          <label class="f"><span>No. telefon</span><input class="inp" id="o-phone" placeholder="01X-XXX XXXX" inputmode="tel"></label>
+        </div>
+        <label class="f"><span>Alahan / makanan / nota</span><input class="inp" id="c-note" placeholder="cth. Makan Royal Canin, alah ayam"></label>
+
+        <div class="sum" id="sumBox"></div>
+        <button class="btn pri" style="width:100%;padding:11px" id="submitBtn" onclick="submitBooking()">Hantar tempahan</button>
+        <p class="small muted" style="text-align:center;margin:8px 0 0">Deposit 30% untuk sahkan tempahan</p>
+      </div>
+
+      <div class="card-b hide" id="bookDone" style="text-align:center"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STAFF -->
+<section id="staff" class="staff hide">
+  <nav class="side" id="sideNav">
+    <button data-p="dash" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Papan Pemuka</button>
+    <button data-p="cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Kalendar Bilik</button>
+    <button data-p="groom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12"/></svg>Grooming</button>
+    <button data-p="cats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l4 4h8l4-4v9a8 8 0 0 1-16 0z"/></svg>Profil Kucing</button>
+    <button data-p="pos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 7H6"/></svg>Kaunter Jualan</button>
+    <button data-p="rep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Laporan</button>
+  </nav>
+  <main id="main"></main>
+</section>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="card modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- helpers ---------- */
+const pad = n => String(n).padStart(2,'0');
+const iso = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y,m-1,d); };
+const addDays = (s,n) => { const d = parse(s); d.setDate(d.getDate()+n); return iso(d); };
+const nightsBetween = (a,b) => Math.round((Date.UTC(...ymd(b)) - Date.UTC(...ymd(a)))/864e5);
+function ymd(s){ const [y,m,d]=s.split('-').map(Number); return [y,m-1,d]; }
+const BULAN = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
+const HARI = ['Ahd','Isn','Sel','Rab','Kha','Jum','Sab'];
+const dShort = s => { const d = parse(s); return d.getDate()+' '+BULAN[d.getMonth()]; };
+const rm = n => 'RM' + n.toLocaleString('en-MY',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TODAY = iso(new Date());
+const COLORS = ['#c2571a','#2c64b5','#2f7d4f','#8a4fb3','#b3372f','#a86a00','#167a80','#6b625a'];
+
+/* ---------- data (contoh) ---------- */
+const ROOMTYPES = {
+  std:{name:'Standard',price:20,desc:'Sangkar 2 tingkat'},
+  dlx:{name:'Deluxe',price:30,desc:'Bilik kaca 3 tingkat'},
+  ste:{name:'Suite',price:45,desc:'Tingkap & ruang main'}
+};
+const ROOMS = [
+  ['S1','std'],['S2','std'],['S3','std'],['S4','std'],['S5','std'],['S6','std'],
+  ['D1','dlx'],['D2','dlx'],['D3','dlx'],['D4','dlx'],['V1','ste'],['V2','ste']
+].map(([id,type]) => ({id,type}));
+const PKGS = {
+  full:{name:'Grooming Penuh',price:80,dur:'2 jam'},
+  bath:{name:'Mandi Asas',price:40,dur:'1 jam'},
+  nail:{name:'Potong Kuku & Bersih Telinga',price:15,dur:'30 min'}
+};
+const SLOTS = ['10:00','11:00','12:00','14:00','15:00','16:00','17:00','18:00'];
+
+let cats = [
+  {id:1,name:'Oyen',breed:'Domestik',age:'3 thn',owner:'Puan Aisyah',phone:'012-934 5521',vac:'Lengkap (Feb 2026)',allergy:'Tiada',food:'Whiskas kering, 2 kali sehari',lastGroom:-20},
+  {id:2,name:'Comel',breed:'Persian',age:'2 thn',owner:'En. Hafiz',phone:'019-882 1107',vac:'Lengkap (Jun 2026)',allergy:'Ayam',food:'Royal Canin Persian',lastGroom:-45},
+  {id:3,name:'Milo',breed:'British Shorthair',age:'4 thn',owner:'Cik Nurul',phone:'013-445 9020',vac:'Perlu ulangan (Dis 2026)',allergy:'Tiada',food:'Makanan basah, 3 kali',lastGroom:-12},
+  {id:4,name:'Bulus',breed:'Persian Flat',age:'1 thn',owner:'En. Zul',phone:'011-2378 4410',vac:'Lengkap (Ogo 2026)',allergy:'Tiada',food:'Royal Canin Kitten',lastGroom:-38},
+  {id:5,name:'Snowy',breed:'Ragdoll',age:'5 thn',owner:'Puan Siti',phone:'017-990 3312',vac:'Lengkap (Mac 2026)',allergy:'Ikan',food:'Hill\'s Science Diet',lastGroom:-60},
+  {id:6,name:'Luna',breed:'Maine Coon',age:'2 thn',owner:'Dr. Amir',phone:'012-600 7781',vac:'Lengkap (Mei 2026)',allergy:'Tiada',food:'Orijen, 2 kali',lastGroom:-8},
+  {id:7,name:'Tompok',breed:'Domestik',age:'6 thn',owner:'Mak Cik Wan',phone:'014-512 0098',vac:'Perlu ulangan (Nov 2026)',allergy:'Tiada',food:'Me-O kering',lastGroom:-33},
+  {id:8,name:'Kiki',breed:'Scottish Fold',age:'3 thn',owner:'Cik Farah',phone:'016-770 2234',vac:'Lengkap (Jan 2026)',allergy:'Tiada',food:'Royal Canin Indoor',lastGroom:-15},
+  {id:9,name:'Mochi',breed:'Persian',age:'1 thn',owner:'En. Faiz',phone:'018-221 6654',vac:'Lengkap (Sep 2026)',allergy:'Tiada',food:'Royal Canin Kitten',lastGroom:-30},
+];
+cats.forEach((c,i) => { c.color = COLORS[i % COLORS.length]; c.updates = []; c.lastGroomDate = addDays(TODAY, c.lastGroom); });
+
+let seq = 1040;
+let stays = [
+  {room:'S1',cat:1,in:-2,out:2,paid:true},
+  {room:'S2',cat:2,in:0,out:3,paid:true},
+  {room:'S3',cat:3,in:1,out:5,paid:true},
+  {room:'D1',cat:4,in:-1,out:4,paid:true},
+  {room:'D2',cat:5,in:3,out:7,paid:false},
+  {room:'V1',cat:6,in:0,out:6,paid:true},
+  {room:'S4',cat:7,in:5,out:9,paid:true},
+  {room:'D3',cat:8,in:-3,out:0,paid:true},
+  {room:'S5',cat:7,in:-6,out:-1,paid:true},
+].map(s => ({...s, id:'RJ-'+(seq++), in:addDays(TODAY,s.in), out:addDays(TODAY,s.out), isNew:false}));
+
+let grooms = [
+  {date:0,slot:'10:00',cat:9,pkg:'full',done:true},
+  {date:0,slot:'14:00',cat:1,pkg:'bath',done:false},
+  {date:0,slot:'16:00',cat:3,pkg:'nail',done:false},
+  {date:1,slot:'11:00',cat:5,pkg:'full',done:false},
+  {date:1,slot:'15:00',cat:2,pkg:'bath',done:false},
+  {date:2,slot:'10:00',cat:7,pkg:'bath',done:false},
+].map(g => ({...g, id:'RJ-'+(seq++), date:addDays(TODAY,g.date), isNew:false}));
+
+let products = [
+  {id:1,name:'Syampu Anti Kutu 250ml',price:28,stock:14,min:5},
+  {id:2,name:'Vitamin Bulu Lebat',price:35,stock:4,min:5},
+  {id:3,name:'Royal Canin Persian 2kg',price:95,stock:8,min:3},
+  {id:4,name:'Pasir Tofu 6L',price:22,stock:20,min:6},
+  {id:5,name:'Makanan Basah (pek 12)',price:30,stock:3,min:4},
+  {id:6,name:'Sikat Bulu',price:18,stock:11,min:3},
+  {id:7,name:'Mainan Bulu Ayam',price:9,stock:25,min:5},
+  {id:8,name:'Ubat Cacing',price:15,stock:9,min:4},
+];
+let sales = [ {total:63,items:3}, {total:95,items:1}, {total:44,items:2} ];
+let cart = [];
+let newCount = 0;
+const reminded = new Set();
+
+/* ---------- mode switching ---------- */
+function setMode(m){
+  document.getElementById('cust').classList.toggle('hide', m!=='cust');
+  document.getElementById('staff').classList.toggle('hide', m!=='staff');
+  document.getElementById('m-cust').classList.toggle('on', m==='cust');
+  document.getElementById('m-staff').classList.toggle('on', m==='staff');
+  if (m==='staff'){ render(); }
+  window.scrollTo(0,0);
+}
+let page = 'dash';
+document.getElementById('sideNav').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  page = b.dataset.p;
+  document.querySelectorAll('#sideNav button').forEach(x => x.classList.toggle('on', x===b));
+  render();
+});
+function go(p){ page=p; document.querySelectorAll('#sideNav button').forEach(x => x.classList.toggle('on', x.dataset.p===p)); render(); }
+
+function toast(msg){
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+function openModal(html){ document.getElementById('modal').innerHTML = html; document.getElementById('modalBg').classList.add('show'); }
+function closeModal(){ document.getElementById('modalBg').classList.remove('show'); }
+
+/* ---------- availability logic ---------- */
+const overlaps = (aIn,aOut,bIn,bOut) => aIn < bOut && bIn < aOut;
+function freeRooms(type, dIn, dOut){
+  return ROOMS.filter(r => r.type===type && !stays.some(s => s.room===r.id && overlaps(dIn,dOut,s.in,s.out)));
+}
+const catById = id => cats.find(c => c.id===id);
+const inHouse = () => stays.filter(s => s.in<=TODAY && s.out>TODAY);
+
+/* ---------- customer form ---------- */
+let svc = 'hotel', roomType = 'dlx', gSlot = null;
+function setSvc(s){
+  svc = s;
+  document.getElementById('t-hotel').classList.toggle('on', s==='hotel');
+  document.getElementById('t-groom').classList.toggle('on', s==='groom');
+  document.getElementById('f-hotel').classList.toggle('hide', s!=='hotel');
+  document.getElementById('f-groom').classList.toggle('hide', s!=='groom');
+  s==='hotel' ? refreshHotel() : refreshGroom();
+}
+function refreshHotel(){
+  const hin = document.getElementById('h-in'), hout = document.getElementById('h-out');
+  if (hout.value <= hin.value) hout.value = addDays(hin.value, 1);
+  hout.min = addDays(hin.value,1);
+  const n = nightsBetween(hin.value, hout.value);
+  document.getElementById('roomOpts').innerHTML = Object.entries(ROOMTYPES).map(([k,t]) => {
+    const free = freeRooms(k, hin.value, hout.value).length;
+    return `<button class="ropt ${k===roomType?'on':''} ${free?'':'full'}" onclick="roomType='${k}';refreshHotel()">
+      <b>${t.name}</b><span>${rm(t.price)}/malam</span><br><span>${free? free+' kosong':'Penuh'}</span></button>`;
+  }).join('');
+  const free = freeRooms(roomType, hin.value, hout.value);
+  document.getElementById('availMsg').innerHTML = free.length
+    ? `<div class="avail p-good">Ada ${free.length} bilik ${ROOMTYPES[roomType].name} kosong untuk ${dShort(hin.value)} hingga ${dShort(hout.value)}.</div>`
+    : `<div class="avail p-bad">Bilik ${ROOMTYPES[roomType].name} penuh untuk tarikh ini. Cuba jenis bilik atau tarikh lain.</div>`;
+  const total = n * ROOMTYPES[roomType].price;
+  document.getElementById('sumBox').innerHTML =
+    `<div><span>Bilik ${ROOMTYPES[roomType].name} × ${n} malam</span><span>${rm(total)}</span></div>
+     <div><span>Deposit 30%</span><span>${rm(Math.round(total*.3))}</span></div>
+     <div class="tt"><span>Jumlah</span><span>${rm(total)}</span></div>`;
+  document.getElementById('submitBtn').disabled = !free.length;
+}
+function refreshGroom(){
+  const date = document.getElementById('g-date').value;
+  const taken = grooms.filter(g => g.date===date).map(g => g.slot);
+  if (taken.includes(gSlot)) gSlot = null;
+  document.getElementById('tslots').innerHTML = SLOTS.map(s =>
+    `<button class="tslot ${s===gSlot?'on':''}" ${taken.includes(s)?'disabled':''} onclick="gSlot='${s}';refreshGroom()">${s}</button>`).join('');
+  const p = PKGS[document.getElementById('g-pkg').value];
+  document.getElementById('sumBox').innerHTML =
+    `<div><span>${p.name} (${p.dur})</span><span>${rm(p.price)}</span></div>
+     <div><span>Slot</span><span>${gSlot ? dShort(date)+', '+gSlot : 'Pilih slot'}</span></div>
+     <div class="tt"><span>Jumlah</span><span>${rm(p.price)}</span></div>`;
+  document.getElementById('submitBtn').disabled = !gSlot;
+}
+function submitBooking(){
+  const name = document.getElementById('c-name').value.trim() || 'Si Comel';
+  const breed = document.getElementById('c-breed').value.trim() || 'Domestik';
+  const owner = document.getElementById('o-name').value.trim() || 'Pelanggan Baru';
+  const phone = document.getElementById('o-phone').value.trim() || '01X-XXX XXXX';
+  const note = document.getElementById('c-note').value.trim();
+  let cat = cats.find(c => c.name.toLowerCase()===name.toLowerCase() && c.owner===owner);
+  if (!cat){
+    cat = {id:cats.length+1,name,breed,age:'-',owner,phone,vac:'Belum direkod',allergy:note||'Tiada',food:note||'-',lastGroom:-999,lastGroomDate:null,color:COLORS[cats.length%COLORS.length],updates:[],isNew:true};
+    cats.push(cat);
+  }
+  const id = 'RJ-'+(seq++);
+  let html;
+  if (svc==='hotel'){
+    const hin = document.getElementById('h-in').value, hout = document.getElementById('h-out').value;
+    const room = freeRooms(roomType, hin, hout)[0];
+    if (!room) return;
+    const n = nightsBetween(hin,hout), total = n*ROOMTYPES[roomType].price;
+    stays.push({id,room:room.id,cat:cat.id,in:hin,out:hout,paid:false,isNew:true});
+    html = confirmHtml(id, `Hotel Kucing, Bilik ${ROOMTYPES[roomType].name} (${room.id})`, `${dShort(hin)} hingga ${dShort(hout)}, ${n} malam`, cat, total, Math.round(total*.3));
+  } else {
+    const date = document.getElementById('g-date').value, pk = document.getElementById('g-pkg').value;
+    grooms.push({id,date,slot:gSlot,cat:cat.id,pkg:pk,done:false,isNew:true});
+    html = confirmHtml(id, PKGS[pk].name, `${dShort(date)}, ${gSlot}`, cat, PKGS[pk].price, Math.round(PKGS[pk].price*.3));
+    gSlot = null;
+  }
+  newCount++; document.getElementById('newBadge').textContent = newCount;
+  document.getElementById('bookForm').classList.add('hide');
+  const done = document.getElementById('bookDone'); done.innerHTML = html; done.classList.remove('hide');
+}
+function confirmHtml(id, what, when, cat, total, dep){
+  return `<div class="ok-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+  <h2 style="font-size:19px">Tempahan diterima</h2>
+  <p class="muted">No. tempahan <b style="color:var(--ink)">${id}</b></p>
+  <div class="sum" style="text-align:left">
+    <div><span>Servis</span><span>${esc(what)}</span></div>
+    <div><span>Masa</span><span>${when}</span></div>
+    <div><span>Kucing</span><span>${esc(cat.name)} (${esc(cat.breed)})</span></div>
+    <div><span>Pemilik</span><span>${esc(cat.owner)}</span></div>
+    <div class="tt"><span>Deposit 30%</span><span>${rm(dep)}</span></div>
+  </div>
+  <button class="btn pri" style="width:100%;padding:11px" id="payBtn" onclick="payDeposit('${id}')">Bayar deposit ${rm(dep)} (FPX)</button>
+  <p class="small muted" style="margin:10px 0 14px">Pengesahan dan peringatan dihantar ke WhatsApp ${esc(cat.phone)}</p>
+  <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+    <button class="btn" onclick="resetForm()">Buat tempahan lain</button>
+    <button class="btn" onclick="setMode('staff');go('dash')">Lihat di Paparan Staf</button>
+  </div>`;
+}
+function payDeposit(id){
+  const s = stays.find(x => x.id===id) || grooms.find(x => x.id===id);
+  if (s) s.paid = true;
+  const b = document.getElementById('payBtn'); b.disabled = true; b.textContent = 'Deposit dibayar';
+  toast('Bayaran diterima. Resit dihantar ke WhatsApp.');
+}
+function resetForm(){
+  document.getElementById('bookDone').classList.add('hide');
+  document.getElementById('bookForm').classList.remove('hide');
+  ['c-name','c-breed','o-name','o-phone','c-note'].forEach(i => document.getElementById(i).value='');
+  setSvc(svc);
+}
+(function initForm(){
+  const hin = document.getElementById('h-in'), hout = document.getElementById('h-out'), gd = document.getElementById('g-date');
+  hin.min = gd.min = TODAY;
+  hin.value = addDays(TODAY,1); hout.value = addDays(TODAY,4); gd.value = addDays(TODAY,1);
+  document.getElementById('g-pkg').innerHTML = Object.entries(PKGS).map(([k,p]) => `<option value="${k}">${p.name} - ${rm(p.price)}</option>`).join('');
+  refreshHotel();
+})();
+
+/* ---------- staff pages ---------- */
+function render(){
+  const m = document.getElementById('main');
+  m.innerHTML = ({dash:pDash, cal:pCal, groom:pGroom, cats:pCats, pos:pPos, rep:pRep})[page]();
+  if (page==='dash' || page==='cal' || page==='groom'){ newCount = 0; document.getElementById('newBadge').textContent=''; }
+}
+const avatar = c => `<div class="av" style="background:${c.color}">${esc(c.name[0])}</div>`;
+const todayRevenue = () => {
+  const hotel = stays.filter(s => s.in<=TODAY && s.out>TODAY).reduce((a,s)=>a+ROOMTYPES[ROOMS.find(r=>r.id===s.room).type].price,0);
+  const gr = grooms.filter(g => g.date===TODAY && g.done).reduce((a,g)=>a+PKGS[g.pkg].price,0);
+  const pos = sales.reduce((a,s)=>a+s.total,0);
+  return {hotel, gr, pos, all:hotel+gr+pos};
+};
+function head(t, sub, right=''){ return `<div class="page-h"><div><h1>${t}</h1><p>${sub}</p></div>${right}</div>`; }
+function longDate(s){ const d = parse(s); return HARI[d.getDay()]+', '+d.getDate()+' '+BULAN[d.getMonth()]+' '+d.getFullYear(); }
+
+function pDash(){
+  const ih = inHouse(), occ = ih.length, rev = todayRevenue();
+  const ins = stays.filter(s => s.in===TODAY), outs = stays.filter(s => s.out===TODAY);
+  const gt = grooms.filter(g => g.date===TODAY).sort((a,b)=>a.slot.localeCompare(b.slot));
+  const low = products.filter(p => p.stock<=p.min);
+  const recent = [...stays, ...grooms].filter(x => x.isNew);
+  const row = (s, label, cls) => { const c = catById(s.cat); return `<tr><td><div class="who">${avatar(c)}<div><b>${esc(c.name)}</b><div class="small muted">${esc(c.owner)}</div></div></div></td><td>${s.room}</td><td><span class="pill ${cls}">${label}</span></td></tr>`; };
+  return head('Selamat pagi, RJ Cats House', longDate(TODAY)) +
+  (recent.length ? `<div class="card" style="margin-bottom:16px;border-color:var(--brand)"><div class="card-h"><h2>Tempahan baru dalam talian</h2><span class="pill p-brand">${recent.length} baru</span></div><table class="t">${recent.map(x => { const c=catById(x.cat); const isStay = !!x.room; return `<tr><td><b>${x.id}</b></td><td><div class="who">${avatar(c)}<div><b>${esc(c.name)}</b><div class="small muted">${esc(c.owner)} · ${esc(c.phone)}</div></div></div></td><td>${isStay? 'Hotel, bilik '+x.room+'<div class="small muted">'+dShort(x.in)+' hingga '+dShort(x.out)+'</div>' : PKGS[x.pkg].name+'<div class="small muted">'+dShort(x.date)+', '+x.slot+'</div>'}</td><td>${x.paid?'<span class="pill p-good">Deposit dibayar</span>':'<span class="pill p-warn">Menunggu deposit</span>'}</td></tr>`; }).join('')}</table></div>` : '') +
+  `<div class="grid g4" style="margin-bottom:16px">
+    <div class="card stat"><div class="lbl">Bilik terisi</div><div class="val">${occ} / ${ROOMS.length}</div><div class="meter"><i style="width:${occ/ROOMS.length*100}%"></i></div></div>
+    <div class="card stat"><div class="lbl">Masuk / keluar hari ini</div><div class="val">${ins.length} / ${outs.length}</div><div class="sub">kucing</div></div>
+    <div class="card stat"><div class="lbl">Grooming hari ini</div><div class="val">${gt.length}</div><div class="sub">${gt.filter(g=>g.done).length} siap</div></div>
+    <div class="card stat"><div class="lbl">Hasil hari ini</div><div class="val">${rm(rev.all)}</div><div class="sub">Hotel ${rm(rev.hotel)} · Grooming ${rm(rev.gr)} · Kedai ${rm(rev.pos)}</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="card-h"><h2>Masuk dan keluar hari ini</h2><button class="btn sm" onclick="go('cal')">Kalendar</button></div>
+      ${ins.length+outs.length ? `<table class="t"><tr><th>Kucing</th><th>Bilik</th><th>Status</th></tr>${ins.map(s=>row(s,'Masuk','p-blue')).join('')}${outs.map(s=>row(s,'Keluar','p-mute')).join('')}</table>` : '<div class="empty">Tiada pergerakan hari ini</div>'}
+    </div>
+    <div class="card"><div class="card-h"><h2>Jadual grooming</h2><button class="btn sm" onclick="go('groom')">Lihat semua</button></div>
+      ${gt.length ? `<table class="t">${gt.map(g => { const c=catById(g.cat); return `<tr><td><b>${g.slot}</b></td><td>${esc(c.name)}<div class="small muted">${PKGS[g.pkg].name}</div></td><td class="num">${g.done?'<span class="pill p-good">Siap</span>':`<button class="btn sm" onclick="markDone('${g.id}')">Tanda siap</button>`}</td></tr>`; }).join('')}</table>` : '<div class="empty">Tiada temujanji hari ini</div>'}
+    </div>
+  </div>
+  <div class="grid g2e" style="margin-top:16px">
+    <div class="card"><div class="card-h"><h2>Kucing sedang menginap</h2><button class="btn sm" onclick="go('cats')">Hantar kemas kini</button></div>
+      <table class="t">${ih.map(s => { const c=catById(s.cat); const sent = c.updates.some(u=>u.date===TODAY); return `<tr><td><div class="who">${avatar(c)}<div><b>${esc(c.name)}</b><div class="small muted">Bilik ${s.room} · keluar ${dShort(s.out)}</div></div></div></td><td class="num">${sent?'<span class="pill p-good">Kemas kini dihantar</span>':`<button class="btn sm" onclick="updateModal(${c.id})">Hantar gambar</button>`}</td></tr>`; }).join('')}</table>
+    </div>
+    <div class="card"><div class="card-h"><h2>Stok rendah</h2><button class="btn sm" onclick="go('pos')">Kaunter</button></div>
+      ${low.length ? `<table class="t">${low.map(p=>`<tr><td>${esc(p.name)}</td><td class="num"><span class="pill p-bad">Tinggal ${p.stock}</span></td></tr>`).join('')}</table>` : '<div class="empty">Semua stok mencukupi</div>'}
+    </div>
+  </div>`;
+}
+function markDone(id){ const g = grooms.find(x=>x.id===id); g.done = true; const c = catById(g.cat); c.lastGroomDate = g.date; toast(`${c.name} siap. Mesej "sedia untuk diambil" dihantar ke pemilik.`); render(); }
+
+function pCal(){
+  const days = Array.from({length:14}, (_,i) => addDays(TODAY, i-1));
+  const head1 = days.map(d => { const x = parse(d); return `<th class="${d===TODAY?'today':''}">${HARI[x.getDay()]}<br>${x.getDate()}</th>`; }).join('');
+  const rows = ROOMS.map(r => {
+    let cells = '';
+    for (let i=0;i<days.length;i++){
+      const d = days[i];
+      const s = stays.find(s => s.room===r.id && s.in<=d && s.out>d);
+      if (s && (s.in===d || i===0)){
+        let span = 0; while (i+span<days.length && s.out>days[i+span]) span++;
+        const c = catById(s.cat);
+        cells += `<td class="cell" colspan="${span}"><div class="bk k-${r.type} ${s.isNew?'new':''}" title="${esc(c.name)} · ${s.id}">${esc(c.name)}${s.paid?'':' · belum bayar'}</div></td>`;
+        i += span-1;
+      } else cells += `<td class="cell"></td>`;
+    }
+    return `<tr><td class="room">${r.id}<small>${ROOMTYPES[r.type].name}</small></td>${cells}</tr>`;
+  }).join('');
+  return head('Kalendar Bilik', '14 hari, semua 12 bilik. Tempahan dalam talian masuk terus ke sini.',
+    `<div class="small" style="display:flex;gap:8px;flex-wrap:wrap"><span class="pill p-blue">Standard</span><span class="pill p-brand">Deluxe</span><span class="pill p-good">Suite</span></div>`) +
+    `<div class="card scroll-x"><table class="cal"><tr><th style="text-align:left;padding-left:12px">Bilik</th>${head1}</tr>${rows}</table></div>
+    <p class="small muted">Bertanda bingkai oren: tempahan baru dari Paparan Pelanggan.</p>`;
+}
+
+let gDay = TODAY;
+function pGroom(){
+  const days = Array.from({length:5}, (_,i)=>addDays(TODAY,i));
+  const list = grooms.filter(g => g.date===gDay);
+  const due = cats.filter(c => c.lastGroomDate && nightsBetween(c.lastGroomDate, TODAY) >= 30);
+  return head('Grooming & Spa', 'Slot yang sudah ditempah tidak boleh ditempah lagi oleh pelanggan.') +
+  `<div class="tabs" style="max-width:560px">${days.map(d=>`<button class="${d===gDay?'on':''}" onclick="gDay='${d}';render()">${d===TODAY?'Hari ini':dShort(d)}</button>`).join('')}</div>
+  <div class="slots" style="margin-bottom:20px">${SLOTS.map(s => { const g = list.find(x=>x.slot===s); if(!g) return `<div class="slot"><div class="tm">${s}</div><div class="free">Kosong</div></div>`; const c=catById(g.cat); return `<div class="slot busy"><div class="tm">${s} ${g.done?'<span class="pill p-good" style="float:right">Siap</span>':''}</div><b>${esc(c.name)}</b><div class="small muted">${PKGS[g.pkg].name}</div></div>`; }).join('')}</div>
+  <div class="card"><div class="card-h"><h2>Peringatan grooming automatik</h2><span class="small muted">Kucing yang lebih 30 hari tidak grooming</span></div>
+    ${due.length ? `<table class="t"><tr><th>Kucing</th><th class="hide-sm">Grooming terakhir</th><th></th></tr>${due.map(c=>`<tr><td><div class="who">${avatar(c)}<div><b>${esc(c.name)}</b><div class="small muted">${esc(c.owner)}</div></div></div></td><td class="hide-sm">${nightsBetween(c.lastGroomDate,TODAY)} hari lalu</td><td class="num">${reminded.has(c.id)?'<span class="pill p-good">Dihantar</span>':`<button class="btn sm" onclick="remind(${c.id})">Hantar peringatan</button>`}</td></tr>`).join('')}</table>` : '<div class="empty">Tiada</div>'}
+  </div>`;
+}
+function remind(id){
+  const c = catById(id);
+  openModal(`<div class="card-h"><h2>Peringatan ke ${esc(c.owner)}</h2><button class="btn sm" onclick="closeModal()">Tutup</button></div>
+  <div class="card-b"><div class="wa"><div class="wa-msg">Salam ${esc(c.owner)}, sudah ${nightsBetween(c.lastGroomDate,TODAY)} hari ${esc(c.name)} tidak grooming. Tempah slot minggu ini dan dapat potongan 10%:\nrjcatshouse.my/tempah\n\n- RJ Cats House</div></div>
+  <button class="btn pri" style="width:100%;margin-top:12px" onclick="reminded.add(${id});closeModal();toast('Peringatan dihantar melalui WhatsApp');render()">Hantar melalui WhatsApp</button></div>`);
+}
+
+function pCats(){
+  const ih = inHouse().map(s=>s.cat);
+  return head('Profil Kucing', `${cats.length} kucing berdaftar. Klik untuk lihat rekod penuh.`) +
+  `<div class="cats">${cats.map(c => `<div class="card cat" onclick="catModal(${c.id})">
+    <div class="cat-top"><div class="cat-pic" style="background:${c.color}22;color:${c.color}"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3l4 4h8l4-4v9a8 8 0 0 1-16 0z"/></svg></div>
+    <div><h3>${esc(c.name)}</h3><div class="small muted">${esc(c.breed)} · ${esc(c.owner)}</div></div></div>
+    <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+      ${ih.includes(c.id)?'<span class="pill p-blue">Sedang menginap</span>':''}
+      ${c.vac.startsWith('Lengkap')?'<span class="pill p-good">Vaksin lengkap</span>':'<span class="pill p-warn">'+esc(c.vac.split(' (')[0])+'</span>'}
+      ${c.allergy!=='Tiada'?'<span class="pill p-bad">Alah: '+esc(c.allergy)+'</span>':''}
+      ${c.isNew?'<span class="pill p-brand">Baru</span>':''}
+    </div></div>`).join('')}</div>`;
+}
+function catModal(id){
+  const c = catById(id);
+  const hist = [...stays.filter(s=>s.cat===id).map(s=>({d:s.in,t:`Hotel, bilik ${s.room} (${nightsBetween(s.in,s.out)} malam)`})),
+                ...grooms.filter(g=>g.cat===id).map(g=>({d:g.date,t:PKGS[g.pkg].name}))].sort((a,b)=>b.d.localeCompare(a.d));
+  const staying = inHouse().some(s=>s.cat===id);
+  openModal(`<div class="card-h"><div class="who">${avatar(c)}<div><h2>${esc(c.name)}</h2><div class="small muted">${esc(c.breed)} · ${esc(c.age)}</div></div></div><button class="btn sm" onclick="closeModal()">Tutup</button></div>
+  <div class="card-b"><dl class="kv">
+    <dt>Pemilik</dt><dd>${esc(c.owner)}</dd><dt>Telefon</dt><dd>${esc(c.phone)}</dd>
+    <dt>Vaksin</dt><dd>${esc(c.vac)}</dd><dt>Alahan</dt><dd>${esc(c.allergy)}</dd><dt>Makanan</dt><dd>${esc(c.food)}</dd>
+  </dl>
+  <h3 style="font-size:14px;margin:18px 0 8px">Sejarah servis</h3>
+  ${hist.length? hist.map(h=>`<div class="cart-line"><span>${esc(h.t)}</span><span class="small muted">${dShort(h.d)}</span></div>`).join('') : '<div class="muted small">Tiada lagi</div>'}
+  ${c.updates.length? `<h3 style="font-size:14px;margin:18px 0 8px">Kemas kini dihantar</h3>${c.updates.map(u=>`<div class="cart-line"><span>${esc(u.note)}</span><span class="small muted">${dShort(u.date)}</span></div>`).join('')}`:''}
+  ${staying?`<button class="btn pri" style="width:100%;margin-top:16px" onclick="updateModal(${id})">Hantar kemas kini harian</button>`:''}
+  </div>`);
+}
+function updateModal(id){
+  const c = catById(id);
+  openModal(`<div class="card-h"><h2>Kemas kini harian: ${esc(c.name)}</h2><button class="btn sm" onclick="closeModal()">Tutup</button></div>
+  <div class="card-b">
+    <label class="f"><span>Nota ringkas</span><select class="inp" id="upNote" onchange="document.getElementById('upPrev').textContent=waText(${id})">
+      <option>Makan habis, aktif bermain pagi tadi</option><option>Tidur lena, makan sikit, sihat</option><option>Dah mandi dan sikat bulu, wangi</option></select></label>
+    <div class="wa"><div class="wa-msg"><div class="photo-ph"><svg width="40" height="40" viewBox="0 0 24 24" fill="#fff"><path d="M4 3l4 4h8l4-4v9a8 8 0 0 1-16 0z"/></svg></div><span id="upPrev">${waText(id)}</span></div></div>
+    <button class="btn pri" style="width:100%;margin-top:12px" onclick="sendUpdate(${id})">Hantar ke WhatsApp ${esc(c.owner)}</button>
+  </div>`);
+}
+function waText(id){ const c = catById(id); const n = document.getElementById('upNote'); return `Salam ${c.owner}! Kemas kini ${c.name} hari ini:\n${n? n.value : 'Makan habis, aktif bermain pagi tadi'}\n\n- RJ Cats House`; }
+function sendUpdate(id){ const c = catById(id); c.updates.unshift({date:TODAY,note:document.getElementById('upNote').value}); closeModal(); toast(`Gambar dan nota ${c.name} dihantar ke ${c.owner}`); render(); }
+
+function pPos(){
+  const total = cart.reduce((a,l)=>a+l.qty*products.find(p=>p.id===l.id).price,0);
+  return head('Kaunter Jualan', 'Klik produk untuk tambah ke troli. Stok ditolak automatik.') +
+  `<div class="grid g2"><div class="prods">${products.map(p=>`<button class="prod" onclick="addCart(${p.id})" ${p.stock?'':'disabled'}>
+    <b>${esc(p.name)}</b><div class="pr">${rm(p.price)}</div>
+    <div class="small" style="margin-top:4px">${p.stock<=p.min?`<span class="pill p-bad">Stok ${p.stock}</span>`:`<span class="muted">Stok ${p.stock}</span>`}</div></button>`).join('')}</div>
+  <div class="card" style="align-self:start"><div class="card-h"><h2>Troli</h2>${cart.length?'<button class="btn sm" onclick="cart=[];render()">Kosongkan</button>':''}</div><div class="card-b">
+    ${cart.length? cart.map(l=>{const p=products.find(x=>x.id===l.id); return `<div class="cart-line"><span class="small">${esc(p.name)}</span><div class="qty"><button onclick="qty(${p.id},-1)">-</button><b>${l.qty}</b><button onclick="qty(${p.id},1)">+</button><span style="width:56px;text-align:right">${rm(p.price*l.qty)}</span></div></div>`;}).join('') : '<div class="empty" style="padding:16px">Troli kosong</div>'}
+    <div class="total"><span>Jumlah</span><span>${rm(total)}</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+      <button class="btn" ${cart.length?'':'disabled'} onclick="checkout('Tunai')">Tunai</button>
+      <button class="btn pri" ${cart.length?'':'disabled'} onclick="checkout('DuitNow QR')">DuitNow QR</button>
+    </div>
+    <p class="small muted" style="margin:10px 0 0">Jualan hari ini: ${sales.length} transaksi, ${rm(sales.reduce((a,s)=>a+s.total,0))}</p>
+  </div></div></div>`;
+}
+function addCart(id){ const p = products.find(x=>x.id===id); const l = cart.find(x=>x.id===id); const q = l? l.qty:0; if (q>=p.stock){ toast('Stok tidak mencukupi'); return; } l? l.qty++ : cart.push({id,qty:1}); render(); }
+function qty(id,d){ const l = cart.find(x=>x.id===id); const p = products.find(x=>x.id===id); if (d>0 && l.qty>=p.stock) return; l.qty+=d; if(l.qty<=0) cart = cart.filter(x=>x!==l); render(); }
+function checkout(method){
+  const total = cart.reduce((a,l)=>a+l.qty*products.find(p=>p.id===l.id).price,0);
+  const items = cart.reduce((a,l)=>a+l.qty,0);
+  cart.forEach(l => products.find(p=>p.id===l.id).stock -= l.qty);
+  const lines = cart.map(l=>{const p=products.find(x=>x.id===l.id); return `<div class="cart-line"><span class="small">${l.qty} × ${esc(p.name)}</span><span>${rm(p.price*l.qty)}</span></div>`;}).join('');
+  sales.push({total,items}); cart = [];
+  const low = products.filter(p=>p.stock<=p.min).map(p=>p.name);
+  openModal(`<div class="card-h"><h2>Resit digital</h2><button class="btn sm" onclick="closeModal()">Tutup</button></div><div class="card-b">
+    <div style="text-align:center;margin-bottom:10px"><b>RJ Cats House</b><div class="small muted">Wisma Bakty, Seksyen 48, Kota Bharu</div><div class="small muted">${longDate(TODAY)} · ${method}</div></div>
+    ${lines}<div class="total"><span>Jumlah</span><span>${rm(total)}</span></div>
+    <button class="btn pri" style="width:100%;margin-top:14px" onclick="closeModal();toast('Resit dihantar ke WhatsApp pelanggan')">Hantar resit ke WhatsApp</button>
+    ${low.length?`<div class="avail p-warn" style="margin:12px 0 0">Amaran stok rendah: ${low.map(esc).join(', ')}</div>`:''}
+  </div>`);
+}
+
+function pRep(){
+  const rev = todayRevenue();
+  const curMonth = parse(TODAY).getMonth();
+  const base = [8200,9100,7800,10400,11900]; // data contoh 5 bulan lepas
+  const months = base.map((v,i)=>({m:BULAN[(curMonth-5+i+12)%12],v}));
+  const cur = 6200 + rev.all; months.push({m:BULAN[curMonth],v:cur,cur:true});
+  const max = Math.max(...months.map(x=>x.v));
+  const split = [['Hotel',62],['Grooming & spa',27],['Kedai',11]];
+  const top = [['Royal Canin Persian 2kg',41],['Pasir Tofu 6L',36],['Syampu Anti Kutu',29],['Makanan Basah',22]];
+  const occ = Math.round(inHouse().length/ROOMS.length*100);
+  return head('Laporan', 'Ringkasan prestasi perniagaan. Angka contoh untuk demo.') +
+  `<div class="grid g4" style="margin-bottom:16px">
+    <div class="card stat"><div class="lbl">Hasil bulan ini</div><div class="val">${rm(cur)}</div><div class="sub">setakat hari ini</div></div>
+    <div class="card stat"><div class="lbl">Penghunian bilik</div><div class="val">${occ}%</div><div class="sub">purata bulan lepas 71%</div></div>
+    <div class="card stat"><div class="lbl">Pelanggan kembali</div><div class="val">64%</div><div class="sub">tempah lebih sekali</div></div>
+    <div class="card stat"><div class="lbl">Tempahan dalam talian</div><div class="val">48%</div><div class="sub">daripada semua tempahan</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="card-h"><h2>Hasil bulanan (RM)</h2><span class="small muted">6 bulan</span></div><div class="card-b">
+      <div class="bars">${months.map(x=>`<div class="bar ${x.cur?'cur':''}"><b>${(x.v/1000).toFixed(1)}k</b><i style="height:${x.v/max*130}px"></i><span>${x.m}</span></div>`).join('')}</div>
+      <p class="small muted" style="margin:10px 0 0">Bulan semasa belum lengkap.</p>
+    </div></div>
+    <div class="card"><div class="card-h"><h2>Pecahan hasil</h2></div><div class="card-b">
+      ${split.map(([n,v])=>`<div class="hbar"><span>${n}</span><div class="tr"><i style="width:${v}%"></i></div><span class="num">${v}%</span></div>`).join('')}
+      <h3 style="font-size:14px;margin:18px 0 10px">Produk paling laris</h3>
+      ${top.map(([n,v])=>`<div class="hbar"><span class="small">${n}</span><div class="tr"><i style="width:${v/41*100}%"></i></div><span class="num">${v} unit</span></div>`).join('')}
+    </div></div>
+  </div>`;
+}
+</script>
+</body>
+</html>
